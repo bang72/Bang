@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio Surya</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Portfolio Bang Surya Jaya</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
@@ -15,15 +15,25 @@
     }
 
     body {
-      background: linear-gradient(180deg, #0a0f24 0%, #1c2526 100%);
+      background: #0a0f24; /* Warna solid biru tua */
       color: #ffffff;
       overflow-x: hidden;
       line-height: 1.6;
+      position: relative;
+    }
+
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
     }
 
     header {
       background: rgba(10, 15, 36, 0.95);
-      padding: 1rem 4rem;
+      padding: 1rem 9rem;
       position: fixed;
       top: 0;
       width: 100%;
@@ -33,44 +43,58 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       border-radius: 15px;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .logo {
-      height: 40px;
+      height: 60px;
       transition: transform 0.3s ease;
-      position: absolute;
-      left: 4rem;
     }
 
     .logo:hover {
       transform: scale(1.05);
     }
 
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      justify-content: center;
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  white-space: nowrap;  /* Pastikan menu tidak pecah */
+  flex-wrap: nowrap;    /* Jangan pecah ke baris baru */
+}
+
+nav a {
+  white-space: nowrap;  /* Pastikan teks tiap link tetap satu baris */
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+}
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 50%;
+      background: #00d4ff;
+      transition: width 0.3s ease, left 0.3s ease;
     }
 
-    nav a {
-      color: #ffffff;
-      text-decoration: none;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.6rem 1.2rem;
-      transition: color 0.3s ease, background 0.3s ease;
-      position: relative;
+    nav a:hover::after {
+      width: 100%;
+      left: 0;
     }
 
     nav a:hover {
       color: #00d4ff;
       background: rgba(0, 212, 255, 0.2);
+      transform: scale(1.05);
     }
 
     nav a.active {
@@ -79,19 +103,33 @@
       background: rgba(0, 212, 255, 0.3);
     }
 
+    nav a.active::after {
+      width: 100%;
+      left: 0;
+    }
+
     .hamburger {
       display: none;
       font-size: 1.6rem;
       color: #ffffff;
       cursor: pointer;
       z-index: 1100;
-      transition: opacity 0.3s ease;
-      position: absolute;
-      right: 4rem;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
     .hamburger:hover {
       opacity: 0.8;
+      transform: scale(1.1);
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-100%); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     section {
@@ -100,9 +138,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
     section.active {
@@ -119,18 +154,11 @@
       padding: 3rem;
       text-align: center;
       position: relative;
-      backdrop-filter: blur(8px);
       border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, #00d4ff, #ff007a);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     h1 {
@@ -138,10 +166,11 @@
       font-size: 3.2rem;
       font-weight: 800;
       color: #ffffff;
-      margin-bottom: 1.5rem;
+      margin: 0 auto 1.5rem;
       background: linear-gradient(45deg, #00d4ff, #ff007a);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-align: center;
     }
 
     h2 {
@@ -149,7 +178,8 @@
       font-size: 2.4rem;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 1.5rem;
+      margin: 2rem auto 1.5rem;
+      text-align: center;
     }
 
     h3 {
@@ -157,28 +187,32 @@
       font-size: 1.6rem;
       font-weight: 600;
       color: #e0e0e0;
-      margin-bottom: 1rem;
+      margin: 0 auto 1rem;
+      text-align: center;
     }
 
     p {
       font-size: 1rem;
       line-height: 1.6;
       color: #d0d0d0;
-      margin-bottom: 1.2rem;
+      margin: 0 auto 1.2rem;
+      max-width: 600px;
+      text-align: center;
     }
 
     .about-profile {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
       justify-content: center;
+      gap: 2rem;
+      margin: 2rem auto;
+      flex-wrap: wrap;
+      max-width: 800px;
     }
 
     .about-profile img {
       width: 100%;
-      max-width: 250px; /* Reduced from 350px to 250px */
+      max-width: 250px;
       border-radius: 15px;
       object-fit: cover;
       box-shadow: 0 6px 25px rgba(0,0,0,0.3);
@@ -193,19 +227,21 @@
     .about-profile-text {
       flex: 1;
       min-width: 300px;
-      text-align: left;
+      text-align: center;
     }
 
-    .project-item, .skill-item, .contact-item {
-      margin: 0.6rem 0;
-      padding: 1.2rem;
+    .project-item, .contact-item, .poetry-item, .journal-entry {
+      margin: 0.6rem auto;
+      padding: 1rem;
       background: rgba(255,255,255,0.08);
       border-radius: 15px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       border: 1px solid rgba(255,255,255,0.1);
+      max-width: 600px;
+      text-align: center;
     }
 
-    .project-item:hover, .skill-item:hover, .contact-item:hover {
+    .project-item:hover, .contact-item:hover, .poetry-item:hover, .journal-entry:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
@@ -215,9 +251,9 @@
       padding-bottom: 56.25%;
       height: 0;
       overflow: hidden;
-      max-width: 100%;
+      max-width: 600px;
+      margin: 0.6rem auto;
       background: #000;
-      margin: 0.6rem 0;
       border-radius: 15px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
       cursor: pointer;
@@ -237,33 +273,21 @@
       border: none;
     }
 
-    img.design-sample {
-      width: 100%;
-      max-width: 800px;
-      border-radius: 15px;
-      margin: 0.6rem auto;
-      display: block;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-    }
-
-    img.design-sample:hover {
-      transform: scale(1.03);
-      box-shadow: 0 6px 25px rgba(0,0,0,0.3);
-    }
-
     .fullscreen {
       position: fixed;
       top: 0;
       left: 0;
+      right: 0;
+      bottom: 0;
       width: 100vw;
       height: 100vh;
       background: rgba(0,0,0,0.95);
-      z-index: 2000;
+      z-index: 5000;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      margin: 0;
+      padding: 0;
       opacity: 0;
       transition: opacity 0.4s ease;
     }
@@ -274,15 +298,19 @@
 
     .fullscreen iframe,
     .fullscreen img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 10px;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border: none;
+      margin: 0;
+      padding: 0;
+      display: block;
     }
 
     .close-btn {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
       background: #ff007a;
       color: #ffffff;
       border: none;
@@ -292,6 +320,7 @@
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.3s ease;
+      z-index: 5100;
     }
 
     .close-btn:hover {
@@ -299,34 +328,21 @@
       transform: scale(1.1);
     }
 
-    .poetry-item {
-      font-style: italic;
-      color: #d0d0d0;
-      margin: 0.6rem 0;
-      padding: 1.2rem;
-      border-left: 5px solid #00d4ff;
-      background: rgba(255,255,255,0.08);
-      border-radius: 15px;
-      text-align: left;
-      transition: transform 0.3s ease;
+    .error-message {
+      color: #ff007a;
+      font-size: 1rem;
+      text-align: center;
+      margin: 1rem auto;
+      max-width: 600px;
     }
 
-    .poetry-item:hover {
-      transform: translateY(-5px);
+    .poetry-item {
+      font-style: italic;
+      border-left: 5px solid #00d4ff;
     }
 
     .journal-entry {
-      text-align: left;
-      margin: 0.6rem 0;
-      padding: 1.2rem;
-      background: rgba(255,255,255,0.08);
-      border-radius: 15px;
       border-left: 5px solid #ff007a;
-      transition: transform 0.3s ease;
-    }
-
-    .journal-entry:hover {
-      transform: translateY(-5px);
     }
 
     .contact-item a {
@@ -341,48 +357,133 @@
       text-decoration: underline;
     }
 
+    .specialization-container, .tools-container {
+      position: relative;
+      width: 70vw;
+      height: 70vw;
+      max-width: 800px;
+      max-height: 800px;
+      margin: 2rem auto;
+      animation: spin 10s linear infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .specialization-container:hover, .tools-container:hover {
+      animation-play-state: paused;
+    }
+
+    .specialization-logo-wrapper, .tool-logo-wrapper {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      animation: counter-spin 10s linear infinite;
+      --x: 0;
+      --y: 0;
+      transform: translate(var(--x), var(--y));
+    }
+
+    .specialization-container:hover .specialization-logo-wrapper,
+    .tools-container:hover .tool-logo-wrapper {
+      animation-play-state: paused;
+    }
+
+    .specialization-logo, .tool-logo {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .specialization-logo:hover, .tool-logo:hover {
+      transform: scale(1.1);
+    }
+
+    .specialization-logo-wrapper:nth-child(1), .tool-logo-wrapper:nth-child(1) { --x: 28vw; --y: 0px; }
+    .specialization-logo-wrapper:nth-child(2), .tool-logo-wrapper:nth-child(2) { --x: 19.80vw; --y: 19.80vw; }
+    .specialization-logo-wrapper:nth-child(3), .tool-logo-wrapper:nth-child(3) { --x: 0px; --y: 28vw; }
+    .specialization-logo-wrapper:nth-child(4), .tool-logo-wrapper:nth-child(4) { --x: -19.80vw; --y: 19.80vw; }
+    .specialization-logo-wrapper:nth-child(5), .tool-logo-wrapper:nth-child(5) { --x: -28vw; --y: 0px; }
+    .specialization-logo-wrapper:nth-child(6), .tool-logo-wrapper:nth-child(6) { --x: -19.80vw; --y: -19.80vw; }
+    .specialization-logo-wrapper:nth-child(7), .tool-logo-wrapper:nth-child(7) { --x: 0px; --y: -28vw; }
+    .specialization-logo-wrapper:nth-child(8), .tool-logo-wrapper:nth-child(8) { --x: 19.80vw; --y: -19.80vw; }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes counter-spin {
+      from { transform: translate(var(--x), var(--y)) rotate(0deg); }
+      to { transform: translate(var(--x), var(--y)) rotate(-360deg); }
+    }
+
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 0.6rem;
-      margin-top: 0.6rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-auto-rows: auto;
+      gap: 1.2rem;
+      margin: 1.5rem auto;
+      width: 100%;
+      max-width: 800px;
+      justify-content: center;
+    }
+
+    .design-sample {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      object-fit: contain;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: #1a2a44;
+    }
+
+    .design-sample:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
     @media (max-width: 768px) {
       header {
         padding: 1rem 1.5rem;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         max-width: 100%;
         margin: 0;
-        border-radius: 15px 15px 0 0;
+        border-radius: 15px;
       }
 
       .logo {
         height: 35px;
-        position: static;
-        margin-bottom: 0.5rem;
       }
 
       .hamburger {
         display: block;
-        position: absolute;
-        top: 1rem;
-        right: 1.5rem;
       }
 
       nav {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
         width: 100%;
         flex-direction: column;
         padding: 1rem;
         background: rgba(10,15,36,0.95);
         border-radius: 0 0 15px 15px;
-        backdrop-filter: blur(8px);
+        opacity: 0;
+        transform: translateY(-100%);
+        transition: opacity 0.4s ease, transform 0.4s ease;
       }
 
       nav.active {
         display: flex;
+        animation: slideDown 0.4s ease-out forwards;
       }
 
       nav a {
@@ -392,6 +493,61 @@
         width: 100%;
         text-align: center;
         border-radius: 0;
+      }
+
+      .specialization-container, .tools-container {
+        width: 60vw;
+        height: 60vw;
+        max-width: 500px;
+        max-height: 500px;
+      }
+
+      .specialization-logo-wrapper, .tool-logo-wrapper {
+        width: 60px;
+        height: 60px;
+      }
+
+      .specialization-logo-wrapper:nth-child(1), .tool-logo-wrapper:nth-child(1) { --x: 24vw; --y: 0px; }
+      .specialization-logo-wrapper:nth-child(2), .tool-logo-wrapper:nth-child(2) { --x: 16.97vw; --y: 16.97vw; }
+      .specialization-logo-wrapper:nth-child(3), .tool-logo-wrapper:nth-child(3) { --x: 0px; --y: 24vw; }
+      .specialization-logo-wrapper:nth-child(4), .tool-logo-wrapper:nth-child(4) { --x: -16.97vw; --y: 16.97vw; }
+      .specialization-logo-wrapper:nth-child(5), .tool-logo-wrapper:nth-child(5) { --x: -24vw; --y: 0px; }
+      .specialization-logo-wrapper:nth-child(6), .tool-logo-wrapper:nth-child(6) { --x: -16.97vw; --y: -16.97vw; }
+      .specialization-logo-wrapper:nth-child(7), .tool-logo-wrapper:nth-child(7) { --x: 0px; --y: -24vw; }
+      .specialization-logo-wrapper:nth-child(8), .tool-logo-wrapper:nth-child(8) { --x: 16.97vw; --y: -16.97vw; }
+
+      .about-profile {
+        max-width: 600px;
+        gap: 1.5rem;
+      }
+
+      .grid-container {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        gap: 1rem;
+        padding: 0 1rem;
+      }
+
+      .project-item {
+        max-width: 100%;
+        padding: 0.8rem;
+      }
+
+      .video-container {
+        max-width: 100%;
+      }
+
+      .design-sample {
+        max-width: 100%;
+        height: auto;
+      }
+
+      h3 {
+        font-size: 1.3rem;
+      }
+
+      p {
+        font-size: 0.9rem;
       }
     }
 
@@ -409,11 +565,11 @@
       }
 
       h1 {
-        font-size: 2.2rem;
+        font-size: 2rem;
       }
 
       h2 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
       }
 
       .close-btn {
@@ -421,50 +577,148 @@
         padding: 0.4rem 0.8rem;
       }
 
+      .about-profile {
+        max-width: 100%;
+        gap: 1rem;
+      }
+
       .about-profile img {
-        max-width: 200px; /* Further reduced for small screens */
+        max-width: 180px;
+      }
+
+      .specialization-container, .tools-container {
+        width: 50vw;
+        height: 50vw;
+        max-width: 350px;
+        max-height: 350px;
+      }
+
+      .specialization-logo-wrapper, .tool-logo-wrapper {
+        width: 45px;
+        height: 45px;
+      }
+
+      .specialization-logo-wrapper:nth-child(1), .tool-logo-wrapper:nth-child(1) { --x: 20vw; --y: 0px; }
+      .specialization-logo-wrapper:nth-child(2), .tool-logo-wrapper:nth-child(2) { --x: 14.14vw; --y: 14.14vw; }
+      .specialization-logo-wrapper:nth-child(3), .tool-logo-wrapper:nth-child(3) { --x: 0px; --y: 20vw; }
+      .specialization-logo-wrapper:nth-child(4), .tool-logo-wrapper:nth-child(4) { --x: -14.14vw; --y: 14.14vw; }
+      .specialization-logo-wrapper:nth-child(5), .tool-logo-wrapper:nth-child(5) { --x: -20vw; --y: 0px; }
+      .specialization-logo-wrapper:nth-child(6), .tool-logo-wrapper:nth-child(6) { --x: -14.14vw; --y: -14.14vw; }
+      .specialization-logo-wrapper:nth-child(7), .tool-logo-wrapper:nth-child(7) { --x: 0px; --y: -20vw; }
+      .specialization-logo-wrapper:nth-child(8), .tool-logo-wrapper:nth-child(8) { --x: 14.14vw; --y: -14.14vw; }
+
+      .grid-container {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        gap: 0.8rem;
+        padding: 0 0.5rem;
+      }
+
+      .project-item {
+        max-width: 100%;
+        padding: 0.6rem;
+      }
+
+      .video-container {
+        max-width: 100%;
+      }
+
+      .design-sample {
+        max-width: 100%;
+        height: auto;
+      }
+
+      h3 {
+        font-size: 1.1rem;
+      }
+
+      p {
+        font-size: 0.8rem;
       }
     }
   </style>
 </head>
 <body>
+  <div id="particles-js"></div>
   <header>
-    <img src="https://raw.githubusercontent.com/Bang1239/KSJFHK/main/ChatGPT%20Image%20Jul%2017%2C%202025%2C%2010_33_27%20PM.png?raw=true" alt="Logo" class="logo">
-    <div class="hamburger">☰</div>
+    <!-- Ganti URL berikut dengan logo Anda -->
+    <img src="https://github.com/bang72/bang72/blob/bangsuryajaya.my.id/file_00000000a02461f681d3def18667e44a.png?raw=true" alt="Surya Logo" class="logo">
     <nav>
       <a href="#home" onclick="showPage('home')" class="active">Home</a>
-      <a href="#about" onclick="showPage('about')">About Me</a>
       <a href="#video" onclick="showPage('video')">Video Editing</a>
       <a href="#design" onclick="showPage('design')">Graphic Design</a>
       <a href="#poetry" onclick="showPage('poetry')">Poetry</a>
       <a href="#journal" onclick="showPage('journal')">Daily Journal</a>
       <a href="#contact" onclick="showPage('contact')">Contact</a>
     </nav>
+    <div class="hamburger">☰</div>
   </header>
 
   <main>
     <section id="home" class="container active">
-      <h1>Hello, I am Surya</h1>
-      <p>A Frontend Developer & Digital Creator based in Indonesia. I blend technical expertise with creativity to deliver stunning and functional digital works.</p>
-      <div class="grid-container">
-        <div class="skill-item">Specialization: HTML5, CSS3, JavaScript, React, UI/UX Design</div>
-        <div class="skill-item">Tools: Adobe Premiere, After Effects, Photoshop, Figma, Canva</div>
-        <div class="skill-item">Languages: Indonesian, English (Fluent)</div>
-      </div>
-    </section>
-
-    <section id="about" class="container">
-      <h2>About Me</h2>
+      <h1>Hello, I am Bang Surya Jaya</h1>
       <div class="about-profile">
-        <img src="https://raw.githubusercontent.com/Bang1239/KSJFHK/main/file_0000000079c861f7a8cd48a3ed0be754.png" alt="Surya Profile">
+        <!-- Ganti URL berikut dengan foto profil Anda -->
+        <img src="https://github.com/bang72/bang72/blob/bangsuryajaya.my.id/file_0000000086fc61f89ce3c83ed261aee2__1_-removebg-preview.png?raw=true" alt="Surya Profile">
         <div class="about-profile-text">
           <p>I am a frontend developer and digital content creator with over 3 years of experience. Specializing in responsive web development, captivating graphic design, and cinematic video editing, I am dedicated to creating exceptional user experiences. I graduated from the University of Indonesia with a Bachelor’s degree in Computer Science and continue to hone my skills through freelance projects and creative collaborations.</p>
         </div>
       </div>
-      <div class="grid-container">
-        <div class="skill-item">Education: B.Sc. in Computer Science, University of Indonesia (2018-2022)</div>
-        <div class="skill-item">Experience: Freelance Frontend Developer & Content Creator (2022-Present)</div>
-        <div class="skill-item">Certification: Google UX Design Professional Certificate (2023)</div>
+      <h2>Specializations</h2>
+      <div class="specialization-container">
+        <div class="specialization-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" alt="HTML5" class="specialization-logo">
+        </div>
+        <div class="specialization-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" alt="CSS3" class="specialization-logo">
+        </div>
+        <div class="specialization-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="JavaScript" class="specialization-logo">
+        </div>
+        <div class="specialization-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="React" class="specialization-logo">
+        </div>
+        <div class="specialization-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg" alt="UI/UX Design" class="specialization-logo">
+        </div>
+        <div class="specialization-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="TypeScript" class="specialization-logo">
+        </div>
+        <div class="specialization-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="Node.js" class="specialization-logo">
+        </div>
+        <div class="specialization-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg" alt="Git" class="specialization-logo">
+        </div>
+      </div>
+      <h2>Tools</h2>
+      <div class="tools-container">
+        <div class="tool-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/premierepro/premierepro-original.svg" alt="Adobe Premiere" class="tool-logo">
+        </div>
+        <div class="tool-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/aftereffects/aftereffects-original.svg" alt="After Effects" class="tool-logo">
+        </div>
+        <div class="tool-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/photoshop/photoshop-original.svg" alt="Photoshop" class="tool-logo">
+        </div>
+        <div class="tool-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg" alt="Figma" class="tool-logo">
+        </div>
+        <div class="tool-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/canva/canva-original.svg" alt="Canva" class="tool-logo">
+        </div>
+        <div class="tool-logo-wrapper">
+          <!-- Ganti URL berikut dengan ikon Adobe Illustrator Anda -->
+          <img src="https://github.com/bang72/bang72/blob/bangsuryajaya.my.id/png-transparent-adobe-illustrator-cc-logo-tools-design-flat-icon.png?raw=true" class="tool-logo">
+        </div>
+        <div class="tool-logo-wrapper">
+          <!-- Ganti URL berikut dengan ikon CapCut Anda -->
+          <img src="https://github.com/bang72/bang72/blob/bangsuryajaya.my.id/CapCut-Logo-Video-Editing-App-Icon.png?raw=true" alt="CapCut" class="tool-logo">
+        </div>
+        <div class="tool-logo-wrapper">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg" alt="VS Code" class="tool-logo">
+        </div>
       </div>
     </section>
 
@@ -475,28 +729,28 @@
         <div class="project-item">
           <h3>Product Promotion Video</h3>
           <div class="video-container" onclick="openFullscreen(this)">
-            <iframe src="https://www.youtube.com/embed/Eg-dvwR6bLU" title="Product Promotion Video" allowfullscreen></iframe>
+            <iframe data-video-id="video1" src="https://www.youtube.com/embed/Eg-dvwR6bLU?enablejsapi=1&playsinline=1" title="Product Promotion Video" allow="fullscreen; accelerometer; gyroscope; picture-in-picture; autoplay" allowfullscreen></iframe>
           </div>
           <p>A promotional video for a local startup featuring text animations and dynamic transitions.</p>
         </div>
         <div class="project-item">
           <h3>Bali Travel Vlog</h3>
           <div class="video-container" onclick="openFullscreen(this)">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Bali Travel Vlog" allowfullscreen></iframe>
+            <iframe data-video-id="video2" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1&playsinline=1" title="Bali Travel Vlog" allow="fullscreen; accelerometer; gyroscope; picture-in-picture; autoplay" allowfullscreen></iframe>
           </div>
           <p>A travel vlog to Bali with professional color grading and cinematic transitions.</p>
         </div>
         <div class="project-item">
           <h3>Social Awareness Ad</h3>
           <div class="video-container" onclick="openFullscreen(this)">
-            <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" title="Social Awareness Ad" allowfullscreen></iframe>
+            <iframe data-video-id="video3" src="https://www.youtube.com/embed/9bZkp7q19f0?enablejsapi=1&playsinline=1" title="Social Awareness Ad" allow="fullscreen; accelerometer; gyroscope; picture-in-picture; autoplay" allowfullscreen></iframe>
           </div>
           <p>A social media ad for an environmental awareness campaign with modern visual effects.</p>
         </div>
         <div class="project-item">
           <h3>Corporate Event Video</h3>
           <div class="video-container" onclick="openFullscreen(this)">
-            <iframe src="https://www.youtube.com/embed/sample4" title="Corporate Event Video" allowfullscreen></iframe>
+            <iframe data-video-id="video4" src="https://www.youtube.com/embed/3tmd-ClpJxA?enablejsapi=1&playsinline=1" title="Corporate Event Video" allow="fullscreen; accelerometer; gyroscope; picture-in-picture; autoplay" allowfullscreen></iframe>
           </div>
           <p>A professional video documenting a corporate event with polished editing techniques.</p>
         </div>
@@ -509,22 +763,26 @@
       <div class="grid-container">
         <div class="project-item">
           <h3>Music Event Poster</h3>
-          <img src="https://raw.githubusercontent.com/Bang1239/KSJFHK/main/ChatGPT%20Image%20Jul%2017%2C%202025%2C%2010_33_27%20PM.png?raw=true" alt="Music Event Poster" class="design-sample" onclick="openFullscreen(this)">
+          <!-- Ganti URL berikut dengan poster Anda -->
+          <img src="https://cdn.pixabay.com/photo/2021/07/19/10/52/boat-6477856_1280.png" alt="Music Event Poster" class="design-sample" onclick="openFullscreen(this)">
           <p>A vibrant and modern poster for a local music festival.</p>
         </div>
         <div class="project-item">
           <h3>Tech Startup Logo</h3>
-          <img src="https://raw.githubusercontent.com/Bang1239/KSJFHK/main/ChatGPT%20Image%20Jul%2017%2C%202025%2C%2010_33_27%20PM.png?raw=true" alt="Tech Startup Logo" class="design-sample" onclick="openFullscreen(this)">
+          <!-- Ganti URL berikut dengan logo startup Anda -->
+          <img src="https://cdn.pixabay.com/photo/2021/07/19/10/52/boat-6477856_1280.png" alt="Tech Startup Logo" class="design-sample" onclick="openFullscreen(this)">
           <p>A minimalist logo for a tech startup focusing on simplicity and professionalism.</p>
         </div>
         <div class="project-item">
           <h3>Social Media Banner</h3>
-          <img src="https://raw.githubusercontent.com/Bang1239/KSJFHK/main/ChatGPT%20Image%20Jul%2017%2C%202025%2C%2010_33_27%20PM.png?raw=true" alt="Social Media Banner" class="design-sample" onclick="openFullscreen(this)">
+          <!-- Ganti URL berikut dengan banner Anda -->
+          <img src="https://cdn.pixabay.com/photo/2021/07/19/10/52/boat-6477856_1280.png" alt="Social Media Banner" class="design-sample" onclick="openFullscreen(this)">
           <p>A creative banner for social media campaigns with bold typography.</p>
         </div>
         <div class="project-item">
           <h3>Branding Illustration</h3>
-          <img src="https://raw.githubusercontent.com/Bang1239/KSJFHK/main/ChatGPT%20Image%20Jul%2017%2C%202025%2C%2010_33_27%20PM.png?raw=true" alt="Branding Illustration" class="design-sample" onclick="openFullscreen(this)">
+          <!-- Ganti URL berikut dengan ilustrasi Anda -->
+          <img src="https://cdn.pixabay.com/photo/2021/07/19/10/52/boat-6477856_1280.png" alt="Branding Illustration" class="design-sample" onclick="openFullscreen(this)">
           <p>An illustrative design for brand identity with a unique artistic touch.</p>
         </div>
       </div>
@@ -588,7 +846,75 @@
     </section>
   </main>
 
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
+    // Inisialisasi Particles.js
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: '#ffffff' },
+        shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
+        opacity: { value: 0.5, random: false },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+        modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+      },
+      retina_detect: true
+    });
+
+    // Inisialisasi YouTube IFrame API
+    let players = {};
+
+    function onYouTubeIframeAPIReady() {
+      const iframes = document.querySelectorAll('.video-container iframe');
+      iframes.forEach(iframe => {
+        const videoId = iframe.getAttribute('data-video-id');
+        if (videoId && iframe.src.includes('youtube.com')) {
+          players[videoId] = new YT.Player(iframe, {
+            events: {
+              'onReady': onPlayerReady,
+              'onError': (event) => {
+                console.warn(`Error in video ${videoId}:`, event.data);
+                const container = iframe.closest('.project-item');
+                if (container && !container.querySelector('.error-message')) {
+                  const errorMsg = document.createElement('p');
+                  errorMsg.className = 'error-message';
+                  errorMsg.textContent = 'Error: Failed to load video. Please check the URL atau coba lagi nanti.';
+                  container.insertBefore(errorMsg, iframe.parentElement.nextSibling);
+                }
+              }
+            }
+          });
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      // Player siap, tidak ada aksi tambahan
+    }
+
+    function pauseAllVideos(excludeVideoId) {
+      Object.keys(players).forEach(videoId => {
+        if (videoId !== excludeVideoId && players[videoId]) {
+          try {
+            players[videoId].pauseVideo();
+          } catch (e) {
+            console.warn(`Error pausing video ${videoId}:`, e);
+            const iframe = document.querySelector(`iframe[data-video-id="${videoId}"]`);
+            if (iframe) {
+              iframe.src = iframe.src;
+            }
+          }
+        }
+      });
+    }
+
     function showPage(pageId) {
       const sections = document.querySelectorAll('main section');
       const links = document.querySelectorAll('nav a');
@@ -603,7 +929,7 @@
       const targetSection = document.getElementById(pageId);
       const targetLink = document.querySelector(`nav a[href="#${pageId}"]`);
       if (targetSection && targetLink) {
-        targetSection.style.display = 'block';
+        targetSection.style.display = 'flex';
         setTimeout(() => targetSection.classList.add('active'), 10);
         targetLink.classList.add('active');
       }
@@ -613,31 +939,80 @@
       if (nav.classList.contains('active')) {
         nav.classList.remove('active');
         hamburger.textContent = '☰';
+        hamburger.style.transform = '';
       }
+
+      pauseAllVideos();
     }
 
     function openFullscreen(element) {
+      const iframe = element.querySelector('iframe');
+      const img = element.tagName === 'IMG' ? element : null;
+      const videoId = iframe ? iframe.getAttribute('data-video-id') : null;
+
+      if (videoId) {
+        pauseAllVideos(videoId);
+      }
+
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
       const fullscreenDiv = document.createElement('div');
       fullscreenDiv.className = 'fullscreen';
       let content;
-      if (element.tagName === 'IMG') {
+
+      if (img) {
         content = document.createElement('img');
-        content.src = element.src;
-        content.alt = element.alt;
+        content.src = img.src;
+        content.alt = img.alt;
       } else {
-        content = element.querySelector('iframe').cloneNode(true);
+        content = iframe.cloneNode(true);
+        content.src += (content.src.includes('?') ? '&' : '?') + 'enablejsapi=1&playsinline=1';
+        content.setAttribute('allow', 'fullscreen; accelerometer; gyroscope; picture-in-picture; autoplay');
+        content.setAttribute('allowfullscreen', '');
       }
+
       const closeBtn = document.createElement('button');
       closeBtn.className = 'close-btn';
       closeBtn.innerHTML = '×';
       closeBtn.onclick = () => {
         fullscreenDiv.classList.remove('active');
+        if (content.tagName === 'IFRAME' && videoId && players[videoId]) {
+          try {
+            players[videoId].pauseVideo();
+          } catch (e) {
+            console.warn(`Error pausing video ${videoId} on close:`, e);
+            content.src = content.src;
+          }
+        }
         setTimeout(() => fullscreenDiv.remove(), 400);
       };
+
       fullscreenDiv.appendChild(content);
       fullscreenDiv.appendChild(closeBtn);
       document.body.appendChild(fullscreenDiv);
       setTimeout(() => fullscreenDiv.classList.add('active'), 10);
+
+      if (!isSafari && content.tagName === 'IFRAME' && document.fullscreenEnabled) {
+        content.requestFullscreen().then(() => {
+          if (videoId && !players[`fullscreen_${videoId}`]) {
+            players[`fullscreen_${videoId}`] = new YT.Player(content, {
+              events: {
+                'onReady': (event) => {
+                  // Opsional: Mulai video saat fullscreen
+                }
+              }
+            });
+          }
+        }).catch(err => {
+          console.warn('Fullscreen API failed:', err);
+        });
+      } else if (content.tagName === 'IFRAME' && videoId && players[videoId]) {
+        try {
+          // Opsional: Mulai video saat fullscreen
+        } catch (e) {
+          console.warn(`Error playing video ${videoId} in Safari:`, e);
+        }
+      }
     }
 
     document.querySelector('.hamburger').addEventListener('click', () => {
@@ -645,9 +1020,10 @@
       const hamburger = document.querySelector('.hamburger');
       nav.classList.toggle('active');
       hamburger.textContent = nav.classList.contains('active') ? '✕' : '☰';
+      hamburger.style.transform = nav.classList.contains('active') ? 'rotate(45deg)' : '';
     });
 
-    window.onload = () => showPage('home');
+    window.onload = () => setTimeout(() => showPage('home'), 500);
 
     document.querySelectorAll('nav a').forEach(link => {
       link.addEventListener('click', (e) => {
